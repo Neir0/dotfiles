@@ -1,0 +1,5 @@
+{
+	"coc.preferences.formatOnSaveFiletypes": ["*"],
+	"html.suggest.ionic": false,
+	"html.suggest.angular1": false
+}
