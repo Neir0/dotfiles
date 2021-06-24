@@ -14,7 +14,7 @@ set smartcase
 set splitright
 set tabstop=2
 
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore="node_modules/*" --ignore="dist/*" -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
 let g:gruvbox_italic=1
 let g:gruvbox_invert_selection=0
 let g:sneak#label=1
