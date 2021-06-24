@@ -3,6 +3,8 @@ set confirm
 set foldcolumn=2
 set hidden
 set ignorecase
+set list
+set listchars=eol:↲,tab:⤳⤳,trail:·,extends:➥,precedes:➥,nbsp:␣
 set noshowmode
 set nowrap
 set number relativenumber
