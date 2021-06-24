@@ -1,0 +1,23 @@
+# General
+set imap_check_subscribed 
+
+# Sidebar
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+
+source ~/.config/mutt/account
+
+set header_cache=~/.cache/mutt/headers
+
+# Colour scheme
+source ~/.config/mutt/gruvbox-theme
+
+# Read in plain text if possible
+alternative_order text/plain text/html
+auto_view text/html
+set mailcap_path = ~/.config/mutt/mailcap
+
+# Enforce encoding in utf8
+set send_charset="utf-8"
+
