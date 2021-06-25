@@ -1,5 +1,6 @@
 set clipboard=unnamed
 set confirm
+set cursorline
 set foldcolumn=2
 set hidden
 set ignorecase
