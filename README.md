@@ -9,7 +9,7 @@ ln -s ~/dotfiles/config/nvim/ ~/.config/nvim
 ## Alacritty
 
 ```
- ln -s ~/dotfiles/alacritty/ ~/.config/alacritty
+ ln -s ~/dotfiles/config/alacritty/ ~/.config/alacritty
 ```
 
 ## Tmux
