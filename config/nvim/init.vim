@@ -4,20 +4,21 @@ set cursorline
 set foldcolumn=2
 set hidden
 set ignorecase
-set list
-set listchars=eol:↲,tab:⤳⤳,trail:·,extends:➥,precedes:➥,nbsp:␣
+" set list
+" set listchars=extends:➥,precedes:➥,nbsp:␣
 set noshowmode
 set nowrap
 set number relativenumber
 set nu rnu
+set redrawtime=20000
 set shiftwidth=2
 set smartcase
 set splitright
 set tabstop=2
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
-let g:gruvbox_italic=1
-let g:gruvbox_invert_selection=0
+" let g:gruvbox_italic=1
+" let g:gruvbox_invert_selection=0
 let g:sneak#label=1
 let g:vimspector_install_gadgets = [ 'vscode-node-debug2', 'debugger-for-chromedebugpy']
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -37,8 +38,6 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-fugitive'
 Plug 'puremourning/vimspector'
 Plug 'justinmk/vim-sneak'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'asheq/close-buffers.vim'
 Plug 'mattn/emmet-vim'
 Plug 'rhysd/git-messenger.vim'
@@ -46,12 +45,16 @@ Plug 'rhysd/git-messenger.vim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 " Plug 'vim-test/vim-test'
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'shaunsingh/nord.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'marko-cerovac/material.nvim'
+Plug 'hoob3rt/lualine.nvim'
 call plug#end()
 
-colorscheme gruvbox
-" colorscheme nord
+" Color scheme
+" colorscheme gruvbox
+let g:material_style = 'darker'
+colorscheme material
 
 " My remaps!
 imap jj <Esc>
@@ -67,16 +70,67 @@ nnoremap <leader>tv :vsplit\|:terminal<cr>
 nnoremap <leader>ff :Files<CR> 
 nnoremap <leader>fl :BLines<CR> 
 nnoremap <leader>fa :Ag<CR> 
-" nnoremap <leader>fa :call fzf#vim#grep('ag --ignore={"node_modules/*","dist/*"}  *', 1, fzf#vim#with_preview(), 0)<cr>
 
-" " Telescope
-" lua << EOF
-" require('telescope').setup{
-" 	defaults = {
-" 			file_ignore_patterns = { 'node_modules/*', 'dist/*' }
-" 		}
-" }
-" EOF
+" Treesitter
+lua <<EOF
+require 'nvim-treesitter.configs'.setup {
+
+	ensure_installed = { "typescript", "html", "javascript", "json", "css", "scss", "dockerfile", "lua", "yaml" },
+
+  highlight = {
+    enable = true,
+  },
+
+
+  textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+  },
+
+  indent = {
+    enable = true
+  }
+}
+EOF
+
+" Lualine
+lua <<EOF
+require 'lualine'.setup {
+	options = {
+		-- theme = 'material-nvim'
+		theme = 'palenight'
+	}
+}
+EOF
 
 " Window management
 nnoremap <leader>wv :wincmd v<CR>
@@ -170,17 +224,6 @@ endfunction
 
 let g:coc_snippet_next = '<tab>'
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
 " Vimspector
 nnoremap <leader>dd :call vimspector#Launch()<cr>
 nnoremap <leader>ds :call vimspector#Reset()<cr>
@@ -196,4 +239,7 @@ nnoremap <leader>tf :NERDTreeFind<CR>
 " Test
 let g:test#javascript#runner = 'jest'
 let test#enabled_runners = ["javascript#jest"]
+
+" Fix syntax highlight for large files
+" autocmd BufEnter * :syntax sync fromstart
 
