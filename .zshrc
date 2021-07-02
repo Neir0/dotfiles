@@ -109,3 +109,5 @@ export NNN_OPTS=e
 # Ripgrep
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 
+# Bat
+export BAT_THEME="Nord"
