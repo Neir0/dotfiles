@@ -102,8 +102,9 @@ unsetopt inc_append_history
 unsetopt share_history
 
 # NNN
+BLK="0B" CHR="0B" DIR="04" EXE="06" REG="00" HARDLINK="06" SYMLINK="06" MISSING="00" ORPHAN="09" FIFO="06" SOCK="0B" OTHER="06"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 export NNN_OPTS=e
-export NNN_FCOLORS='c1e225ac006033f7c6d6abc4'
 
 # Ripgrep
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
