@@ -32,7 +32,6 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'gruvbox-community/gruvbox'
 Plug 'preservim/nerdtree'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-fugitive'
@@ -41,20 +40,19 @@ Plug 'justinmk/vim-sneak'
 Plug 'asheq/close-buffers.vim'
 Plug 'mattn/emmet-vim'
 Plug 'rhysd/git-messenger.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 " Plug 'vim-test/vim-test'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'marko-cerovac/material.nvim'
-Plug 'hoob3rt/lualine.nvim'
+Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
 " Color scheme
-" colorscheme gruvbox
-let g:material_style = 'darker'
-colorscheme material
+colorscheme nord
 
 " My remaps!
 imap jj <Esc>
@@ -78,7 +76,7 @@ require 'nvim-treesitter.configs'.setup {
 	ensure_installed = { "typescript", "html", "javascript", "json", "css", "scss", "dockerfile", "lua", "yaml" },
 
   highlight = {
-    enable = true,
+    enable = false, -- TODO: wait for nord to support treesitter
   },
 
 
@@ -119,16 +117,6 @@ require 'nvim-treesitter.configs'.setup {
   indent = {
     enable = true
   }
-}
-EOF
-
-" Lualine
-lua <<EOF
-require 'lualine'.setup {
-	options = {
-		-- theme = 'material-nvim'
-		theme = 'palenight'
-	}
 }
 EOF
 
@@ -233,8 +221,9 @@ nnoremap <leader>dwv :call win_gotoid(g:vimspector_session_windows.variables)<cr
 
 " NERDTree
 let NERDTreeWinSize=50
-nnoremap <leader>tt :NERDTreeToggle<CR>
-nnoremap <leader>tf :NERDTreeFind<CR>
+nnoremap <leader>tf <cmd>NERDTreeFocus<cr>
+nnoremap <leader>th <cmd>NERDTreeFind<cr>
+nnoremap <leader>tt <cmd>NERDTreeToggle<cr>
 
 " Test
 let g:test#javascript#runner = 'jest'
@@ -242,4 +231,4 @@ let test#enabled_runners = ["javascript#jest"]
 
 " Fix syntax highlight for large files
 " autocmd BufEnter * :syntax sync fromstart
-
+"

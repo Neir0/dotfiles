@@ -1,21 +1,33 @@
 # M'dotfiles
 
+## Zsh
+
+```
+echo -e "source ~/dotfiles/.zshrc\n\n$(cat ~/.zshrc)" > ~/.zshrc
+ln -s ~/dotfiles/.zshrc ~/.zshrc
+```
+
+## Oh-my-zsh
+
+```
+rm -rf ~/.oh-my-zsh/custom
+ln -s ~/dotfiles/ohmyzsh/custom ~/.oh-my-zsh/custom
+```
+
 ## Neovim
 
 ```
 ln -s ~/dotfiles/config/nvim/ ~/.config/nvim
 ```
 
-## Alacritty
+## iTerm2
 
-```
- ln -s ~/dotfiles/config/alacritty/ ~/.config/alacritty
-```
+Go to `Preferences > General > Preferences` and set path to `~/dotfiles/iterm2/`
 
 ## Tmux
 
 ```
- ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ```
 
 ## Neomutt
