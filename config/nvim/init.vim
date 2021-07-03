@@ -15,6 +15,7 @@ set shiftwidth=2
 set smartcase
 set splitright
 set tabstop=2
+set termguicolors
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
 " let g:gruvbox_italic=1
@@ -42,10 +43,6 @@ Plug 'mattn/emmet-vim'
 Plug 'rhysd/git-messenger.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-" Plug 'vim-test/vim-test'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'arcticicestudio/nord-vim'
@@ -230,5 +227,5 @@ let g:test#javascript#runner = 'jest'
 let test#enabled_runners = ["javascript#jest"]
 
 " Fix syntax highlight for large files
-" autocmd BufEnter * :syntax sync fromstart
-"
+autocmd BufEnter * :syntax sync fromstart
+
