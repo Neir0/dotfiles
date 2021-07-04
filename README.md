@@ -43,3 +43,7 @@ ln -s ~/dotfiles/config/mutt/ ~/.config/mutt
 ```
 ln -s ~/dotfiles/.agignore ~/.agignore
 ```
+
+## Rectangle
+
+Import `RectangleConfig.json`.
