@@ -47,6 +47,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'arcticicestudio/nord-vim'
 Plug 'vim-test/vim-test'
+" Plug 'tpope/vim-dispatch'
 Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
@@ -241,6 +242,14 @@ nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
 let g:test#javascript#runner = 'jest'
 let test#enabled_runners = ["javascript#jest", "javascript#cypress"]
 " let test#javascript#jest#options = '--noStackTrace'
+" let test#strategy = "dispatch"
+" let g:dispatch_compilers = {}
+" let g:dispatch_compilers['node_modules/.bin/jest'] = 'jest'
+" let g:dispatch_compilers['npx jest'] = 'jest'
+" let g:dispatch_compiler = {}
+" let g:dispatch_compiler['node_modules/.bin/jest'] = 'jest'
+" let g:dispatch_compiler['npx jest'] = 'jest'
+" let test#javascript#jest#executable = 'npx jest'
 
 " Ultest
 let g:ultest_use_pty = 1
