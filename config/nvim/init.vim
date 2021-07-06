@@ -46,6 +46,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'arcticicestudio/nord-vim'
+Plug 'vim-test/vim-test'
+Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+
 call plug#end()
 
 " Color scheme
@@ -58,13 +61,25 @@ nnoremap <leader>G :Ge :<cr>
 
 " Terminal
 tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
-nnoremap <leader>to :terminal<cr>
-nnoremap <leader>tv :vsplit\|:terminal<cr>
+nnoremap <leader>co :terminal<cr>
+nnoremap <leader>cv :vsplit\|:terminal<cr>
 
-" Find
+" FZF
 nnoremap <leader>ff :Files<CR> 
 nnoremap <leader>fl :BLines<CR> 
 nnoremap <leader>fa :Ag<CR> 
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " Treesitter
 lua <<EOF
@@ -218,13 +233,29 @@ nnoremap <leader>dwv :call win_gotoid(g:vimspector_session_windows.variables)<cr
 
 " NERDTree
 let NERDTreeWinSize=50
-nnoremap <leader>tf <cmd>NERDTreeFocus<cr>
-nnoremap <leader>th <cmd>NERDTreeFind<cr>
-nnoremap <leader>tt <cmd>NERDTreeToggle<cr>
+nnoremap <leader>nf <cmd>NERDTreeFocus<cr>
+nnoremap <leader>nh <cmd>NERDTreeFind<cr>
+nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
 
 " Test
 let g:test#javascript#runner = 'jest'
-let test#enabled_runners = ["javascript#jest"]
+let test#enabled_runners = ["javascript#jest", "javascript#cypress"]
+" let test#javascript#jest#options = '--noStackTrace'
+
+" Ultest
+let g:ultest_use_pty = 1
+let g:ultest_summary_width = 70
+let g:ultest_output_on_line = 0
+" NOTE: we'll need to activate this if we want to support describe(MyComponent.name, () => { ... }) syntax in out jest spec files.
+" let g:ultest_disable_grouping = ['javascript#jest']
+
+nmap <silent> <leader>tt <plug>(ultest-summary-toggle)
+nmap <silent> <leader>tf <plug>(ultest-summary-jump)
+nmap <silent> <leader>th <plug>(ultest-run-nearest)
+nmap <silent> <leader>tr <plug>(ultest-run-file)
+nmap <silent> <leader>tn <plug>(ultest-next-fail)
+nmap <silent> <leader>tp <plug>(ultest-prev-fail)
+nmap <silent> <leader>to <cmd>UltestOutput<cr>
 
 " Fix syntax highlight for large files
 autocmd BufEnter * :syntax sync fromstart
