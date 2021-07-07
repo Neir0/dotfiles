@@ -11,7 +11,7 @@ ln -s ~/dotfiles/.zshrc ~/.zshrc
 
 ```
 rm -rf ~/.oh-my-zsh/custom
-ln -s ~/dotfiles/ohmyzsh/custom ~/.oh-my-zsh/custom
+cp -R ~/dotfiles/ohmyzsh/custom ~/.oh-my-zsh/
 ```
 
 ## Neovim
