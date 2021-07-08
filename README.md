@@ -20,6 +20,12 @@ cp -R ~/dotfiles/ohmyzsh/custom ~/.oh-my-zsh/
 ln -s ~/dotfiles/config/nvim/ ~/.config/nvim
 ```
 
+## Coc (extensions)
+
+```
+ln -s ~/dotfiles/config/coc/extensions ~/.config/coc/extensions
+```
+
 ## iTerm2
 
 Go to `Preferences > General > Preferences` and set path to `~/dotfiles/iterm2/`

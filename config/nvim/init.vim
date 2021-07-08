@@ -6,18 +6,22 @@ set hidden
 set ignorecase
 " set list
 " set listchars=extends:➥,precedes:➥,nbsp:␣
+set nobackup
 set noshowmode
 set nowrap
+set nowritebackup
 set number relativenumber
 set nu rnu
 set redrawtime=20000
 set shiftwidth=2
+set signcolumn=number
 set smartcase
 set splitright
 set tabstop=2
 set termguicolors
+set updatetime=300
 
-let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
+" let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
 " let g:gruvbox_italic=1
 " let g:gruvbox_invert_selection=0
 let g:sneak#label=1
@@ -67,9 +71,13 @@ nnoremap <leader>co :terminal<cr>
 nnoremap <leader>cv :vsplit\|:terminal<cr>
 
 " FZF
-nnoremap <leader>ff :Files<CR> 
-nnoremap <leader>fl :BLines<CR> 
-nnoremap <leader>fa :Ag<CR> 
+nnoremap <leader>ff <cmd>Files<cr> 
+nnoremap <leader>fl <cmd>BLines<cr> 
+nnoremap <leader>fa <cmd>Ag<cr> 
+nnoremap <leader>fb <cmd>Buffers<cr>
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -153,6 +161,7 @@ nnoremap <leader>bo :Bdelete other<cr>
 " Folds
 nmap <leader>zf zfaf
 
+" Coc
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -168,11 +177,7 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
@@ -262,4 +267,3 @@ nmap <silent> <leader>to <cmd>UltestOutput<cr>
 " Fix syntax highlight for large files
 autocmd BufEnter * :syntax sync fromstart
 
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
