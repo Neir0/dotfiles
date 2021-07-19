@@ -23,7 +23,10 @@ ln -s ~/dotfiles/config/nvim/ ~/.config/nvim
 ## Coc (extensions)
 
 ```
+rm -R ~/.config/coc/extensions/
 ln -s ~/dotfiles/config/coc/extensions ~/.config/coc/extensions
+cd ~/.config/coc/extensions/
+npm install
 ```
 
 ## iTerm2
