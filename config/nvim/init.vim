@@ -25,8 +25,6 @@ set updatetime=300
 " let g:gruvbox_italic=1
 " let g:gruvbox_invert_selection=0
 let g:sneak#label=1
-let g:vimspector_install_gadgets = [ 'vscode-node-debug2', 'debugger-for-chromedebugpy']
-let g:vimspector_enable_mappings = 'HUMAN'
 let g:git_messenger_always_into_popup=1
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
 let g:git_messenger_popup_content_margins = v:false
@@ -35,6 +33,7 @@ let mapleader=" "
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/jsonc.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
@@ -143,13 +142,13 @@ require 'nvim-treesitter.configs'.setup {
 EOF
 
 " Window management
-nnoremap <leader>wv :wincmd v<CR>
-nnoremap <leader>wr :wincmd r<CR>
-nnoremap <leader>wp :wincmd p<CR>
-nnoremap <leader>wh :wincmd h<CR>
-nnoremap <leader>wl :wincmd l<CR>
-nnoremap <leader>wj :wincmd j<CR>
-nnoremap <leader>wk :wincmd k<CR>
+nnoremap <silent> <leader>wv :wincmd v<CR>
+nnoremap <silent> <leader>wr :wincmd r<CR>
+nnoremap <silent> <leader>wp :wincmd p<CR>
+nnoremap <silent> <leader>wh :wincmd h<CR>
+nnoremap <silent> <leader>wl :wincmd l<CR>
+nnoremap <silent> <leader>wj :wincmd j<CR>
+nnoremap <silent> <leader>wk :wincmd k<CR>
 
 " Buffer management
 nnoremap <leader>bl :Buffers<cr>
@@ -178,17 +177,8 @@ endfunction
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
 
 " GoTo code navigation.
 nmap <silent> <leader>gd <Plug>(coc-definition)
@@ -198,6 +188,10 @@ nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
 nmap <silent> <leader>gs :CocList outline<CR>
 nmap <silent> <leader>ga :CocAction<CR>
+nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
+nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -232,22 +226,32 @@ endfunction
 let g:coc_snippet_next = '<tab>'
 
 " Vimspector
-nnoremap <leader>dd :call vimspector#Launch()<cr>
-nnoremap <leader>ds :call vimspector#Reset()<cr>
-nnoremap <leader>dwc :call win_gotoid(g:vimspector_session_windows.code)<cr>
-nnoremap <leader>dww :call win_gotoid(g:vimspector_session_windows.watches)<cr>
-nnoremap <leader>dwv :call win_gotoid(g:vimspector_session_windows.variables)<cr>
+let g:vimspector_install_gadgets = [ 'vscode-node-debug2', 'debugger-for-chromedebugpy']
+let g:vimspector_enable_mappings = 'HUMAN'
 
-" NERDTree
-let NERDTreeWinSize=50
-nnoremap <leader>nf <cmd>NERDTreeFocus<cr>
-nnoremap <leader>nh <cmd>NERDTreeFind<cr>
-nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
+nmap <leader>dd :call vimspector#Launch()<cr>
+nmap <leader>ds :call vimspector#Reset()<cr>
+nmap <leader>dwc :call win_gotoid(g:vimspector_session_windows.code)<cr>
+nmap <leader>dww :call win_gotoid(g:vimspector_session_windows.watches)<cr>
+nmap <leader>dwv :call win_gotoid(g:vimspector_session_windows.variables)<cr>
+nmap <leader>dws :call win_gotoid(g:vimspector_session_windows.stack_trace)<cr>
+nmap <leader>dT :call vimspector#LaunchWithSettings(#{ configuration: 'UI Test - Launch (File)' })<cr>
+nmap <leader>di <plug>VimspectorBalloonEval
+nmap <leader><F11> <plug>VimspectorUpFrame
+nmap <leader><F12> <plug>VimspectorDownFrame
 
 " Test
 let g:test#javascript#runner = 'jest'
 let test#enabled_runners = ["javascript#jest", "javascript#cypress"]
-" let test#javascript#jest#options = '--noStackTrace'
+
+" Test/Vimspector Jest integration
+function! JestTestNearestStrategy(cmd)
+  let testName = matchlist(a:cmd, '\v -t ''(.*)''')[1]
+  call vimspector#LaunchWithSettings( #{ configuration: 'UI Test - Launch (Nearest)', TestName: testName } )
+endfunction
+
+let g:test#custom_strategies = {'jest_nearest': function('JestTestNearestStrategy')}
+nnoremap <leader>dt <cmd>TestNearest -strategy=jest_nearest<cr>
 
 " Ultest
 let g:ultest_use_pty = 1
@@ -263,6 +267,12 @@ nmap <silent> <leader>tr <plug>(ultest-run-file)
 nmap <silent> <leader>tn <plug>(ultest-next-fail)
 nmap <silent> <leader>tp <plug>(ultest-prev-fail)
 nmap <silent> <leader>to <cmd>UltestOutput<cr>
+
+" NERDTree
+let NERDTreeWinSize=50
+nnoremap <leader>nf <cmd>NERDTreeFocus<cr>
+nnoremap <leader>nh <cmd>NERDTreeFind<cr>
+nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
 
 " Fix syntax highlight for large files
 autocmd BufEnter * :syntax sync fromstart
