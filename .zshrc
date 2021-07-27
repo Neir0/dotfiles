@@ -107,7 +107,7 @@ export NNN_OPTS=e
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 
 # Bat
-export BAT_THEME="Nord"
+export BAT_THEME="Dracula"
 
 # FZF
 export FZF_DEFAULT_COMMAND='ag --hidden -g ""'

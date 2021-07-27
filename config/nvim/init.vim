@@ -49,6 +49,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-test/vim-test'
 " Plug 'tpope/vim-dispatch'
 " Plug 'neomake/neomake'
@@ -57,7 +58,7 @@ Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
 " Color scheme
-colorscheme nord
+colorscheme dracula
 
 " My remaps!
 imap jj <Esc>
@@ -136,7 +137,7 @@ require 'nvim-treesitter.configs'.setup {
   },
 
   indent = {
-    enable = true
+    enable = false
   }
 }
 EOF
