@@ -39,6 +39,14 @@ Go to `Preferences > General > Preferences` and set path to `~/dotfiles/iterm2/`
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ```
 
+## tpm
+
+```
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+Install `tpm` plugins inside tmux session with `<prefix> + I`.
+
 ## Neomutt
 
 Add account configuration to `~/dotfiles/config/mutt/account`.
