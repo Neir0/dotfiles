@@ -58,7 +58,7 @@ Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
 " Color scheme
-colorscheme dracula
+colorscheme nord
 
 " My remaps!
 imap jj <Esc>
