@@ -6,6 +6,7 @@ set hidden
 set ignorecase
 " set list
 " set listchars=extends:➥,precedes:➥,nbsp:␣
+set mouse=a
 set nobackup
 set noshowmode
 set nowrap
@@ -18,6 +19,9 @@ set signcolumn=number
 set smartcase
 set splitright
 set tabstop=2
+set tabstop=2 
+set shiftwidth=2 
+set expandtab
 set termguicolors
 set updatetime=300
 
