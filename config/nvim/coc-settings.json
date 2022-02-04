@@ -2,5 +2,7 @@
   "coc.preferences.formatOnSaveFiletypes": ["*"],
   "html.suggest.ionic": false,
   "html.suggest.angular1": false,
-  "angular.enable-experimental-ivy-prompt": false
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "angular.enable-experimental-ivy-prompt": false,
+  "docthis.includeTypes": false
 }
