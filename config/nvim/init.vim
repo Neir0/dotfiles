@@ -33,6 +33,9 @@ let g:git_messenger_always_into_popup=1
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
 let g:git_messenger_popup_content_margins = v:false
 let g:airline_extensions = ['coc', 'fzf']
+let g:nvim_tree_group_empty=1
+let g:nvim_tree_special_files={}
+let g:nvim_tree_highlight_opened_files=2
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
@@ -42,9 +45,10 @@ Plug 'neoclide/jsonc.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
-Plug 'preservim/nerdtree'
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'puremourning/vimspector'
 Plug 'justinmk/vim-sneak'
 Plug 'asheq/close-buffers.vim'
@@ -55,9 +59,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tomasiser/vim-code-dark'
 Plug 'vim-test/vim-test'
-" Plug 'tpope/vim-dispatch'
-" Plug 'neomake/neomake'
+Plug 'lilydjwg/colorizer'
 Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
@@ -80,6 +85,7 @@ nnoremap <leader>ff <cmd>Files<cr>
 nnoremap <leader>fl <cmd>BLines<cr> 
 nnoremap <leader>fa <cmd>Ag<cr>
 nnoremap <leader>fb <cmd>GBranches<cr>
+nnoremap <leader>fh <cmd>Helptags<cr>
 
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
@@ -99,13 +105,11 @@ let g:fzf_action = {
 " Treesitter
 lua <<EOF
 require 'nvim-treesitter.configs'.setup {
-
 	ensure_installed = { "typescript", "html", "javascript", "json", "css", "scss", "dockerfile", "lua", "yaml" },
 
   highlight = {
     enable = false, -- TODO: wait for nord to support treesitter
   },
-
 
   textobjects = {
     move = {
@@ -142,6 +146,18 @@ require 'nvim-treesitter.configs'.setup {
   },
 
   indent = {
+    enable = false
+  }
+}
+
+-- nvim-tree
+require 'nvim-tree'.setup {
+  disable_netrw = true,
+  auto_close = true,
+  view = {
+    width = 50 
+  },
+  git = {
     enable = false
   }
 }
