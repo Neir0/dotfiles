@@ -28,6 +28,8 @@ set updatetime=300
 " let $FZF_DEFAULT_COMMAND = 'ag --hidden -g ""'
 " let g:gruvbox_italic=1
 " let g:gruvbox_invert_selection=0
+let g:coc_fzf_preview='right:50%'
+let g:coc_fzf_opts=[]
 let g:sneak#label=1
 let g:git_messenger_always_into_popup=1
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
@@ -36,6 +38,7 @@ let g:airline_extensions = ['coc', 'fzf']
 let g:nvim_tree_group_empty=1
 let g:nvim_tree_special_files={}
 let g:nvim_tree_highlight_opened_files=2
+
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
@@ -44,6 +47,7 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'neoclide/jsonc.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'antoinemadec/coc-fzf'
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'tomtom/tcomment_vim'
@@ -64,7 +68,6 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'vim-test/vim-test'
 Plug 'lilydjwg/colorizer'
 Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
-
 call plug#end()
 
 colorscheme nord
@@ -153,7 +156,6 @@ require 'nvim-treesitter.configs'.setup {
 -- nvim-tree
 require 'nvim-tree'.setup {
   disable_netrw = true,
-  auto_close = true,
   view = {
     width = 50 
   },
@@ -208,12 +210,16 @@ nmap <silent> <leader>gvd :vsp<cr><Plug>(coc-definition)
 nmap <silent> <leader>gt <Plug>(coc-type-definition)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
-nmap <silent> <leader>gs :CocList outline<CR>
+" nmap <silent> <leader>gs :CocList outline<CR>
 nmap <silent> <leader>ga :CocAction<CR>
 nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
 nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" coc-fzf
+nnoremap <silent> <leader>gs :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <leader>gg :<C-u>CocFzfListResume<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -290,12 +296,11 @@ nmap <silent> <leader>tn <plug>(ultest-next-fail)
 nmap <silent> <leader>tp <plug>(ultest-prev-fail)
 nmap <silent> <leader>to <cmd>UltestOutput<cr>
 
-" NERDTree
-let NERDTreeWinSize=50
-nnoremap <leader>nf <cmd>NERDTreeFocus<cr>
-nnoremap <leader>nh <cmd>NERDTreeFind<cr>
-nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
+" nvim-tree
+nnoremap <leader>nt <cmd>NvimTreeToggle<CR>
+nnoremap <leader>nf <cmd>NvimTreeFocusCR>
+nnoremap <leader>nh <cmd>NvimTreeFindFile<CR>
+autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
 
 " Fix syntax highlight for large files
 autocmd BufEnter * :syntax sync fromstart
-
