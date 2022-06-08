@@ -1,0 +1,370 @@
+set clipboard=unnamed
+set confirm
+set cursorline
+set foldcolumn=2
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+" set foldnestmax=2
+set hidden
+set ignorecase
+" set list
+" set listchars=extends:➥,precedes:➥,nbsp:␣
+set mouse=a
+set nobackup
+set noshowmode
+set nowrap
+set nowritebackup
+set number relativenumber
+set nu rnu
+set redrawtime=20000
+set shiftwidth=2
+set signcolumn=number
+set smartcase
+set splitright
+set tabstop=2
+set tabstop=2 
+set shiftwidth=2 
+set expandtab
+set termguicolors
+set updatetime=300
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+
+let g:coc_global_extensions = ['coc-tsserver', 'coc-angular', 'coc-prettier', 'coc-css', 'coc-json', 'coc-pairs', 'coc-html', 'coc-snippets', 'coc-spell-checker', 'coc-emmet', 'coc-sumneko-lua']
+let g:coc_fzf_preview='right:50%'
+let g:coc_fzf_opts=[]
+let g:sneak#label=1
+let g:git_messenger_always_into_popup=1
+let g:git_messenger_floating_win_opts = { 'border': 'single' }
+let g:git_messenger_popup_content_margins = v:false
+let g:airline_extensions = ['coc', 'fzf']
+
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+call plug#begin(stdpath('data') . '/plugged')
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/jsonc.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'antoinemadec/coc-fzf'
+Plug 'stsewd/fzf-checkout.vim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'puremourning/vimspector'
+Plug 'justinmk/vim-sneak'
+Plug 'asheq/close-buffers.vim'
+Plug 'rhysd/git-messenger.vim'
+" Plug 'nvim-lualine/lualine.nvim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tomasiser/vim-code-dark'
+Plug 'vim-test/vim-test'
+Plug 'lilydjwg/colorizer'
+Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+" Plug 'mhinz/vim-startify'
+" Plug 's1n7ax/nvim-terminal',
+Plug 'akinsho/toggleterm.nvim'
+call plug#end()
+
+colorscheme nord
+
+" My remaps!
+imap jj <Esc>
+nnoremap <leader>s :w<CR>
+nnoremap <leader>GG :Ge :<cr>
+nnoremap <leader>Gg :Ge :<cr>
+nnoremap <leader>Gc :G commit<cr>
+nnoremap <leader>Gp :G push<cr>
+nnoremap <leader>Gl :G pull<cr>
+nnoremap <leader>Gb :G blame<cr>
+nnoremap <leader>jd :call CocAction('runCommand', 'docthis.documentThis')<cr>
+
+" Terminal
+tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+nnoremap <silent> <leader>; :ToggleTermToggleAll<cr>
+nnoremap <silent> <leader>1 :1ToggleTerm<cr>
+nnoremap <silent> <leader>2 :2ToggleTerm<cr>
+nnoremap <silent> <leader>3 :3ToggleTerm<cr>
+" nnoremap <leader>co :terminal<cr>
+" nnoremap <leader>cv :vsplit\|:terminal<cr>
+
+" FZF
+nnoremap <leader>ff <cmd>Files<cr> 
+nnoremap <leader>fl <cmd>BLines<cr> 
+nnoremap <leader>fa <cmd>Ag<cr>
+nnoremap <leader>fb <cmd>GBranches<cr>
+nnoremap <leader>fh <cmd>Helptags<cr>
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Quickfix/Location lists
+nnoremap <leader>qn <cmd>cnext<cr>
+nnoremap <leader>qp <cmd>cprevious<cr>
+nnoremap <leader>qc <cmd>cclose<cr>
+nnoremap <leader>ln <cmd>lnext<cr>
+nnoremap <leader>lp <cmd>lprevious<cr>
+nnoremap <leader>lc <cmd>lclose<cr>
+
+function! Grep(...)
+	return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+endfunction
+
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
+
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
+cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
+
+augroup quickfix
+	autocmd!
+	autocmd QuickFixCmdPost cgetexpr cwindow
+	autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
+
+" Treesitter
+lua <<EOF
+require 'nvim-treesitter.configs'.setup {
+	ensure_installed = { "typescript", "html", "javascript", "json", "css", "scss", "dockerfile", "lua", "yaml" },
+
+  highlight = {
+    enable = false, -- TODO: wait for nord to support treesitter
+  },
+
+  textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+  },
+
+  indent = {
+    enable = false
+  }
+}
+
+-- nvim-tree
+require 'nvim-tree'.setup {
+  disable_netrw = true,
+  view = {
+    width = 50 
+  },
+  git = {
+    enable = false
+  },
+  renderer = {
+    group_empty = true,
+    highlight_opened_files = 'name',
+    special_files = {}
+  }
+}
+
+-- require 'lualine'.setup {
+--   options = { section_separators = '', component_separators = '' },
+--   sections = {
+--     lualine_b = { 'diagnostics' },
+--     lualine_x = { 'filetype' },
+--   },
+--   extensions = { 'nvim-tree', 'fzf', 'fugitive', 'quickfix' }
+-- }
+
+-- toggleterm
+require 'toggleterm'.setup {
+  -- open_mapping = [[<C-\>]],
+  shade_terminals = false,
+  insert_mappings = false
+}
+
+EOF
+
+
+" Window management
+nnoremap <silent> <leader>wv :wincmd v<CR>
+nnoremap <silent> <leader>wr :wincmd r<CR>
+nnoremap <silent> <leader>wp :wincmd p<CR>
+nnoremap <silent> <leader>wh :wincmd h<CR>
+nnoremap <silent> <leader>wl :wincmd l<CR>
+nnoremap <silent> <leader>wj :wincmd j<CR>
+nnoremap <silent> <leader>wk :wincmd k<CR>
+
+" Buffer management
+nnoremap <leader>bl :Buffers<cr>
+nnoremap <leader>bp :bp<cr>
+nnoremap <leader>bd :Bdelete this<CR>
+nnoremap <leader>ba :Bdelete all<CR>
+nnoremap <leader>bo :Bdelete other<cr>
+
+" Folds
+nmap <leader>zf zfaf
+
+" Coc
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" GoTo code navigation.
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gvd :vsp<cr><Plug>(coc-definition)
+nmap <silent> <leader>gD <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+" nmap <silent> <leader>gs :CocList outline<CR>
+nmap <silent> <leader>ga :CocAction<CR>
+nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
+nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
+nmap <silent> <leader>gR <Plug>(coc-rename)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" coc-angular
+nnoremap <silent> <leader>gc :call CocAction('runCommand', 'angular.goToComponentWithTemplateFile')<cr>
+nnoremap <silent> <leader>gt :call CocAction('runCommand', 'angular.goToTemplateForComponent')<cr>
+
+" coc-fzf
+nnoremap <silent> <leader>gs :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <leader>gg :<C-u>CocFzfListResume<CR>
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" coc-snippets
+" vmap <leader>w <Plug>(coc-snippets-select)
+" imap <C-s> <Plug>(coc-snippets-expand)
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+" Vimspector
+let g:vimspector_install_gadgets = [ 'vscode-node-debug2', 'debugger-for-chromedebugpy']
+let g:vimspector_enable_mappings = 'HUMAN'
+
+nmap <leader>dd :call vimspector#Launch()<cr>
+nmap <leader>ds :call vimspector#Reset()<cr>
+nmap <leader>dwc :call win_gotoid(g:vimspector_session_windows.code)<cr>
+nmap <leader>dww :call win_gotoid(g:vimspector_session_windows.watches)<cr>
+nmap <leader>dwv :call win_gotoid(g:vimspector_session_windows.variables)<cr>
+nmap <leader>dws :call win_gotoid(g:vimspector_session_windows.stack_trace)<cr>
+nmap <leader>dT :call vimspector#LaunchWithSettings(#{ configuration: 'UI Test - Launch (File)' })<cr>
+nmap <leader>di <plug>VimspectorBalloonEval
+nmap <leader><F11> <plug>VimspectorUpFrame
+nmap <leader><F12> <plug>VimspectorDownFrame
+
+" Test
+let g:test#javascript#runner = 'jest'
+let test#enabled_runners = ["javascript#jest", "javascript#cypress"]
+
+" Test/Vimspector Jest integration
+function! JestTestNearestStrategy(cmd)
+  let testName = matchlist(a:cmd, '\v -t ''(.*)''')[1]
+  call vimspector#LaunchWithSettings( #{ configuration: 'UI Test - Launch (Nearest)', TestName: testName } )
+endfunction
+
+let g:test#custom_strategies = {'jest_nearest': function('JestTestNearestStrategy')}
+nnoremap <leader>dt <cmd>TestNearest -strategy=jest_nearest<cr>
+
+" Ultest
+let g:ultest_use_pty = 1
+let g:ultest_summary_width = 70
+let g:ultest_output_on_line = 0
+" NOTE: we'll need to activate this if we want to support describe(MyComponent.name, () => { ... }) syntax in our jest spec files.
+" let g:ultest_disable_grouping = ['javascript#jest']
+
+nmap <silent> <leader>tt <plug>(ultest-summary-toggle)
+nmap <silent> <leader>tf <plug>(ultest-summary-jump)
+nmap <silent> <leader>th <plug>(ultest-run-nearest)
+nmap <silent> <leader>tr <plug>(ultest-run-file)
+nmap <silent> <leader>tn <plug>(ultest-next-fail)
+nmap <silent> <leader>tp <plug>(ultest-prev-fail)
+nmap <silent> <leader>to <cmd>UltestOutput<cr>
+
+" nvim-tree
+nnoremap <leader>nt <cmd>NvimTreeToggle<CR>
+nnoremap <leader>nf <cmd>NvimTreeFocus<CR>
+nnoremap <leader>nh <cmd>NvimTreeFindFile<CR>
+autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
+
+" Fix syntax highlight for large files
+autocmd BufEnter * :syntax sync fromstart
+
+autocmd BufRead * normal zR
