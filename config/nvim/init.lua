@@ -35,7 +35,6 @@ vim.g['coc_global_extensions'] = {
   'coc-prettier',
   'coc-css',
   'coc-json',
-  'coc-pairs',
   'coc-html',
   'coc-snippets',
   'coc-spell-checker',
@@ -43,9 +42,6 @@ vim.g['coc_global_extensions'] = {
   'coc-sumneko-lua',
   'coc-sh'
 }
-vim.g['coc_fzf_preview'] = 'right:50%'
-vim.g['coc_fzf_opts'] = {}
-vim.g['sneak#label'] = 1
 
 P = function(v)
   print(vim.inspect(v))
@@ -61,17 +57,20 @@ require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use { 'neoclide/coc.nvim', branch = 'release' }
   use 'neoclide/jsonc.vim'
-  use { 'junegunn/fzf', run = './install --bin' }
-  use 'junegunn/fzf.vim'
-  use 'antoinemadec/coc-fzf'
-  use 'stsewd/fzf-checkout.vim'
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use 'fannheyward/telescope-coc.nvim'
+  use 'windwp/nvim-autopairs'
   use 'kyazdani42/nvim-web-devicons'
   use 'kyazdani42/nvim-tree.lua'
   use 'tomtom/tcomment_vim'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-surround'
-  use 'justinmk/vim-sneak'
-  use 'asheq/close-buffers.vim'
+  use 'phaazon/hop.nvim'
+  use 'kazhala/close-buffers.nvim'
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
@@ -80,7 +79,7 @@ require('packer').startup(function(use)
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
   use 'arcticicestudio/nord-vim'
-  use 'lilydjwg/colorizer'
+  use 'norcalli/nvim-colorizer.lua'
 
   -- local plugins
   -- use '~/projects/neovim-plugins/test.nvim'
@@ -104,8 +103,6 @@ end
 
 -- my remaps
 nmap('<leader>s', ':w<cr>')
-vim.api.nvim_set_keymap('t', '<esc>', '(&filetype == "fzf") ? "<Esc>" : "<c-\\><c-n>"', { noremap = true, expr = true })
--- tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 nmap('<leader>jd', ':call CocAction("runCommand", "docthis.documentThis")<cr>')
 
 -- fugitive
@@ -116,26 +113,58 @@ nmap('<leader>Gp', ':G push<cr>')
 nmap('<leader>Gl', ':G pull<cr>')
 nmap('<leader>Gb', ':G blame<cr>')
 
--- fzf
-nmap('<leader>ff', '<cmd>Files<cr>')
-nmap('<leader>fa', '<cmd>Ag<cr>')
-nmap('<leader>fl', '<cmd>BLines<cr>')
-nmap('<leader>fb', '<cmd>GBranches<cr>')
-nmap('<leader>fh', '<cmd>Helptags<cr>')
+-- telescope
+require('telescope').setup {
+  defaults = {
+    layout_config = {
+      prompt_position = 'top'
+    },
+    sorting_strategy = 'ascending',
+    path_display = { 'smart' },
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--trim"
+    },
+    preview = {
+      treesitter = false
+    }
+  },
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ['<c-d>'] = 'delete_buffer'
+        }
+      }
+    }
+  }
+}
 
-vim.api.nvim_create_user_command('Ag', "call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)", {
-  bang = true,
-  nargs = '*'
-})
--- vim.api.nvim_create_user_command('Ag', "call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)", {
---   bang = true,
---   nargs = '*'
--- })
+require('telescope').load_extension('fzf')
 
-vim.cmd([[
-  "command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
-  command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
-]])
+nmap('<leader>ff', '<cmd>Telescope find_files<cr>')
+nmap('<leader>fa', '<cmd>Telescope live_grep only_sort_text=true<cr>')
+nmap('<leader>fl', '<cmd>Telescope current_buffer_fuzzy_find<cr>')
+nmap('<leader>fb', '<cmd>Telescope git_branches<cr>')
+nmap('<leader>fh', '<cmd>Telescope help_tags<cr>')
+
+vim.api.nvim_set_hl(0, 'TelescopeMatching', { link = 'SpecialChar' }) -- FIX for nord :/
+
+-- telescope-coc
+require('telescope').load_extension('coc')
+
+nmap('<leader>gs', '<cmd>Telescope coc document_symbols<cr>')
+nmap('<leader>gS', '<cmd>Telescope coc workspace_symbols<cr>')
+nmap('<leader>gr', '<cmd>Telescope coc references<cr>')
+
+-- nvim-autopairs
+require 'nvim-autopairs'.setup {}
 
 -- treesitter
 require 'nvim-treesitter.configs'.setup {
@@ -219,7 +248,6 @@ require 'lualine'.setup {
   },
   extensions = {
     'fugitive',
-    'fzf',
     'nvim-tree',
     'quickfix'
   }
@@ -228,6 +256,16 @@ require 'lualine'.setup {
 nmap('<leader>nt', '<cmd>NvimTreeToggle<cr>')
 nmap('<leader>nf', '<cmd>NvimTreeFocus<cr>')
 nmap('<leader>nh', '<cmd>NvimTreeFindFile<cr>')
+
+-- close-buffers.nvim
+require 'close_buffers'.setup {}
+
+-- nvim-colorizer
+require 'colorizer'.setup { 'html', 'css', 'scss' }
+
+-- hop.nvim
+require 'hop'.setup {}
+nmap('s', '<cmd>HopChar2<cr>')
 
 -- quickfix/location lists
 nmap('<leader>cn', '<cmd>cnext<cr>')
@@ -247,19 +285,16 @@ nmap('<leader>wj', '<cmd>wincmd j<cr>')
 nmap('<leader>wk', '<cmd>wincmd k<cr>')
 
 -- buffer management
-nmap('<leader>bl', '<cmd>Buffers<cr>')
+nmap('<leader>bl', '<cmd>Telescope buffers<cr>')
 nmap('<leader>bp', '<cmd>bp<cr>')
-nmap('<leader>bd', '<cmd>Bdelete this<cr>')
-nmap('<leader>ba', '<cmd>Bdelete all<cr>')
-nmap('<leader>bo', '<cmd>Bdelete other<cr>')
+nmap('<leader>bd', '<cmd>BDelete this<cr>')
+nmap('<leader>ba', '<cmd>BDelete all<cr>')
+nmap('<leader>bo', '<cmd>BDelete other<cr>')
 
 --  goto code navigation.
 nmap('<leader>gd', '<plug>(coc-definition)')
 nmap('<leader>gvd', '<cmd>vsp<cr><plug>(coc-definition)')
--- nmap <silent> <leader>gD <Plug>(coc-type-definition)
--- nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap('<leader>gr', '<plug>(coc-references)')
-nmap('<leader>ga', '<plug>(coc-codeaction)')
+nmap('<leader>ga', '<plug>(coc-codeaction-cursor)')
 nmap('<leader>gn', '<plug>(coc-diagnostic-next-error)')
 nmap('<leader>gp', '<plug>(coc-diagnostic-prev-error)')
 nmap('<leader>gR', '<plug>(coc-rename)')
@@ -271,10 +306,6 @@ nmap('K', ':call ShowDocumentation()<cr>')
 -- coc-angular
 nmap('<leader>gc', ":call CocAction('runCommand', 'angular.goToComponentWithTemplateFile')<cr>")
 nmap('<leader>gt', ":call CocAction('runCommand', 'angular.goToTemplateForComponent')<cr>")
-
--- coc-fzf
-nmap('<leader>gs', ":<C-u>CocFzfList outline<cr>")
-nmap('<leader>gg', ":<C-u>CocFzfListResume<cr>")
 
 -- use <c-space> to trigger completion.
 vim.api.nvim_set_keymap('i', '<c-space>', 'coc#refresh()', { noremap = true, silent = true, expr = true })
