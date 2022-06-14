@@ -1,34 +1,4 @@
 -- options
-vim.o.clipboard = 'unnamed'
-vim.o.confirm = true
-vim.o.cursorline = true
-vim.o.foldenable = false
-vim.o.foldcolumn = '2'
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.o.ignorecase = true
-vim.o.mouse = 'a'
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.showmode = false
-vim.o.wrap = false
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.redrawtime = 20000
-vim.o.shiftwidth = 2
-vim.o.signcolumn = 'number'
-vim.o.smartcase = true
-vim.o.splitright = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
-vim.o.expandtab = true
-vim.o.termguicolors = true
-vim.o.updatetime = 300
-vim.o.grepprg = 'ag --vimgrep $*'
-vim.o.grepformat = '%f:%l:%c:%m'
-
--- globals
-vim.g.mapleader = ' '
 vim.g['coc_global_extensions'] = {
   'coc-tsserver',
   'coc-angular',
@@ -40,256 +10,56 @@ vim.g['coc_global_extensions'] = {
   'coc-spell-checker',
   'coc-emmet',
   'coc-sumneko-lua',
-  'coc-sh'
+  'coc-sh',
+  'coc-docthis'
 }
 
 P = function(v)
   print(vim.inspect(v))
 end
 
-local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-end
-
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  use { 'neoclide/coc.nvim', branch = 'release' }
-  use 'neoclide/jsonc.vim'
-  use {
-    'nvim-telescope/telescope.nvim',
-    requires = { { 'nvim-lua/plenary.nvim' } }
-  }
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-  use 'fannheyward/telescope-coc.nvim'
-  use 'windwp/nvim-autopairs'
-  use 'kyazdani42/nvim-web-devicons'
-  use 'kyazdani42/nvim-tree.lua'
-  use 'tomtom/tcomment_vim'
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-surround'
-  use 'phaazon/hop.nvim'
-  use 'kazhala/close-buffers.nvim'
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'nvim-treesitter/playground'
-  use 'arcticicestudio/nord-vim'
-  use 'norcalli/nvim-colorizer.lua'
-
-  -- local plugins
-  -- use '~/projects/neovim-plugins/test.nvim'
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
-
 vim.cmd('colorscheme nord')
 
-function map(mode, shortcut, command)
-  vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
-end
-
-function nmap(shortcut, command)
-  map('n', shortcut, command)
-end
-
--- my remaps
-nmap('<leader>s', ':w<cr>')
-nmap('<leader>jd', ':call CocAction("runCommand", "docthis.documentThis")<cr>')
-
--- fugitive
-nmap('<leader>GG', ':Ge :<cr>')
-nmap('<leader>Gg', ':Ge :<cr>')
-nmap('<leader>Gc', ':G commit<cr>')
-nmap('<leader>Gp', ':G push<cr>')
-nmap('<leader>Gl', ':G pull<cr>')
-nmap('<leader>Gb', ':G blame<cr>')
+require('options')
+require('plugins')
+require('mappings')
 
 -- telescope
-require('telescope').setup {
-  defaults = {
-    layout_config = {
-      prompt_position = 'top'
-    },
-    sorting_strategy = 'ascending',
-    path_display = { 'smart' },
-    vimgrep_arguments = {
-      "rg",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-      "--trim"
-    },
-    preview = {
-      treesitter = false
-    }
-  },
-  pickers = {
-    buffers = {
-      mappings = {
-        i = {
-          ['<c-d>'] = 'delete_buffer'
-        }
-      }
-    }
-  }
-}
-
-require('telescope').load_extension('fzf')
-
-nmap('<leader>ff', '<cmd>Telescope find_files<cr>')
-nmap('<leader>fa', '<cmd>Telescope live_grep only_sort_text=true<cr>')
-nmap('<leader>fl', '<cmd>Telescope current_buffer_fuzzy_find<cr>')
-nmap('<leader>fb', '<cmd>Telescope git_branches<cr>')
-nmap('<leader>fh', '<cmd>Telescope help_tags<cr>')
-
 vim.api.nvim_set_hl(0, 'TelescopeMatching', { link = 'SpecialChar' }) -- FIX for nord :/
 
--- telescope-coc
-require('telescope').load_extension('coc')
-
-nmap('<leader>gs', '<cmd>Telescope coc document_symbols<cr>')
-nmap('<leader>gS', '<cmd>Telescope coc workspace_symbols<cr>')
-nmap('<leader>gr', '<cmd>Telescope coc references<cr>')
-
--- nvim-autopairs
-require 'nvim-autopairs'.setup {}
-
--- treesitter
-require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "typescript", "html", "javascript", "json", "css", "scss", "dockerfile", "lua", "yaml", "bash" },
-
-  highlight = {
-    enable = false, -- TODO: wait for nord to support treesitter
-  },
-
-  textobjects = {
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
-    },
-
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
-    },
-  },
-
-  indent = {
-    enable = false
-  },
-
-  playground = {
-    enable = true
-  }
+-- nvim-dap
+local dap = require('dap')
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = { os.getenv('HOME') .. '/projects/vscode-node-debug2/out/src/nodeDebug.js' },
 }
 
--- nvim-tree
-require 'nvim-tree'.setup {
-  disable_netrw = true,
-  view = {
-    width = 50
+dap.configurations.javascript = {
+  {
+    name = 'Launch',
+    type = 'node2',
+    request = 'launch',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
   },
-  git = {
-    enable = false
+  {
+    -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    name = 'Attach to process',
+    type = 'node2',
+    request = 'attach',
+    processId = require 'dap.utils'.pick_process,
   },
-  renderer = {
-    group_empty = true,
-    highlight_opened_files = 'name',
-    special_files = {}
-  }
 }
 
--- lualine
-require 'lualine'.setup {
-  options = {
-    component_separators = {},
-    section_separators = {}
-  },
-  sections = {
-    lualine_b = { 'diagnostics', 'filename' },
-    lualine_c = { 'g:coc_status' },
-    lualine_x = {
-      { 'filetype', icon_only = true }
-    }
-  },
-  extensions = {
-    'fugitive',
-    'nvim-tree',
-    'quickfix'
-  }
-}
+require('dapui').setup {}
 
-nmap('<leader>nt', '<cmd>NvimTreeToggle<cr>')
-nmap('<leader>nf', '<cmd>NvimTreeFocus<cr>')
-nmap('<leader>nh', '<cmd>NvimTreeFindFile<cr>')
-
--- close-buffers.nvim
-require 'close_buffers'.setup {}
-
--- nvim-colorizer
-require 'colorizer'.setup { 'html', 'css', 'scss' }
-
--- hop.nvim
-require 'hop'.setup {}
-nmap('s', '<cmd>HopChar2<cr>')
-
--- quickfix/location lists
-nmap('<leader>cn', '<cmd>cnext<cr>')
-nmap('<leader>cp', '<cmd>cprevious<cr>')
-nmap('<leader>cc', '<cmd>cclose<cr>')
-nmap('<leader>ln', '<cmd>lnext<cr>')
-nmap('<leader>lp', '<cmd>lprevious<cr>')
-nmap('<leader>lc', '<cmd>lclose<cr>')
-
--- window management
-nmap('<leader>wv', '<cmd>wincmd v<cr>')
-nmap('<leader>wr', '<cmd>wincmd r<cr>')
-nmap('<leader>wp', '<cmd>wincmd p<cr>')
-nmap('<leader>wh', '<cmd>wincmd h<cr>')
-nmap('<leader>wl', '<cmd>wincmd l<cr>')
-nmap('<leader>wj', '<cmd>wincmd j<cr>')
-nmap('<leader>wk', '<cmd>wincmd k<cr>')
-
--- buffer management
-nmap('<leader>bl', '<cmd>Telescope buffers<cr>')
-nmap('<leader>bp', '<cmd>bp<cr>')
-nmap('<leader>bd', '<cmd>BDelete this<cr>')
-nmap('<leader>ba', '<cmd>BDelete all<cr>')
-nmap('<leader>bo', '<cmd>BDelete other<cr>')
+nmap('<leader>dd', '<cmd>lua require("dap").continue()<cr>')
+nmap('<leader>ds', '<cmd>lua require("dap").step_over()<cr>')
+nmap('<leader>db', '<cmd>lua require("dap").toggle_breakpoint()<cr>')
 
 --  goto code navigation.
 nmap('<leader>gd', '<plug>(coc-definition)')
