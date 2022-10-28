@@ -1,8 +1,6 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["*"],
-  "html.suggest.ionic": false,
-  "html.suggest.angular1": false,
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "angular.enable-experimental-ivy-prompt": false,
-  "docthis.includeTypes": false
+  "snippets.textmateSnippetsRoots": [
+    "~/.vscode/extensions/johnpapa.angular2-13.0.0/snippets/"
+  ],
+  "cSpell.userWords": ["CASB", "Highcharts", "daterange", "datetime"],
 }
