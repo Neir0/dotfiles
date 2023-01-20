@@ -47,9 +47,10 @@ require("mappings")
 
 -- Fix syntax highlight for large files
 vim.cmd([[autocmd BufEnter * :syntax sync fromstart]])
+-- vim.cmd([[autocmd BufReadPost,FileReadPost * normal zR]])
 
 -- autocommands
--- vim.api.nvim_create_autocmd('BufRead', {
---   pattern = '*',
---   command = 'normal zizi'
--- })
+vim.api.nvim_create_autocmd("BufRead", {
+	pattern = "*",
+	command = "normal zizi",
+})

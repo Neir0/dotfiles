@@ -1,5 +1,5 @@
 local function map(mode, shortcut, command)
-	vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
+	vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })
 end
 
 -- vim.keymap.set("n", "<esc>", function()
@@ -13,7 +13,13 @@ end
 
 -- my remaps
 nmap("<leader>s", ":w<cr>")
+nmap("<leader>BB", "<cmd>echo expand('%:p')<cr>")
+nmap("<leader>Bp", '<cmd>let @+ = expand("%:p")<cr>')
+nmap("<leader>Bd", '<cmd>let @+ = expand("%:p:h")<cr>')
 -- nmap("<leader>jd", ':call CocAction("runCommand", "docthis.documentThis")<cr>')
+
+-- folding
+nmap("<leader>zz", "zxzR")
 
 -- telescope
 nmap("<leader>ff", "<cmd>Telescope find_files<cr>")
@@ -21,8 +27,9 @@ nmap("<leader>fa", "<cmd>Telescope live_grep only_sort_text=true<cr>")
 nmap("<leader>fl", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
 nmap("<leader>fw", "<cmd>Telescope grep_string<cr>")
 nmap("<leader>fb", "<cmd>Telescope git_branches<cr>")
+nmap("<leader>fc", "<cmd>Telescope git_commits<cr>")
 nmap("<leader>fh", "<cmd>Telescope help_tags<cr>")
-nmap("<leader>fc", "<cmd>Telescope commands<cr>")
+nmap("<leader>fC", "<cmd>Telescope commands<cr>")
 nmap("<leader>fR", "<cmd>Telescope resume<cr>")
 
 -- nvim-tree
@@ -67,6 +74,7 @@ nmap("<leader>bo", "<cmd>BDelete other<cr>")
 
 -- lsp
 nmap("<leader>gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+nmap("<leader>gi", "<cmd>Telescope lsp_implementations<cr>")
 -- nmap('<leader>gvd', '<cmd>vsp<cr><plug>(coc-definition)')
 nmap("<leader>gs", "<cmd>Telescope lsp_document_symbols<cr>")
 nmap("<leader>gS", "<cmd>Telescope lsp_workspace_symbols<cr>")

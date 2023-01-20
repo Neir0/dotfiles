@@ -1,8 +1,9 @@
 local lspconfig = require("lspconfig")
+local util = require("lspconfig.util")
 
 -- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.tsserver.setup({
@@ -72,13 +73,28 @@ local cmd = {
 	"./node_modules/typescript",
 	-- "/Users/jveiga/.nvm/versions/node/v14.19.2/lib/node_modules/typescript",
 	"--ngProbeLocations",
-	"/Users/jveiga/.nvm/versions/node/v14.19.2/lib/node_modules/@angular/language-service",
+	"/Users/jveiga/.nvm/versions/node/v16.16.0/lib/node_modules/@angular/language-service",
 }
 
 lspconfig.angularls.setup({
 	cmd = cmd,
+	root_dir = util.root_pattern("angular.json", "nx.json"),
 	capabilities = capabilities,
 	on_new_config = function(new_config, new_root_dir)
 		new_config.cmd = cmd
 	end,
 })
+
+-- lspconfig.eslint.setup({
+-- 	capabilities = capabilities,
+-- 	settings = {
+-- 		codeActionOnSave = {
+-- 			enable = true,
+-- 		},
+-- 	},
+-- })
+--
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	pattern = "*.tsx,*.ts,*.jsx,*.js",
+-- 	command = "EslintFixAll",
+-- })

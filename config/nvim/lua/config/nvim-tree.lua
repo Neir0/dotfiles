@@ -2,6 +2,9 @@ require("nvim-tree").setup({
 	disable_netrw = true,
 	view = {
 		width = 50,
+		-- float = {
+		-- 	enable = true,
+		-- },
 	},
 	git = {
 		enable = false,

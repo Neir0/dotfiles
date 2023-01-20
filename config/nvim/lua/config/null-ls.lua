@@ -3,14 +3,19 @@ local null_ls = require("null-ls")
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 null_ls.setup({
-	sources = {
-		-- null_ls.builtins.diagnostics.eslint.with({
-		-- 	condition = function(utils)
-		-- 		return utils.root_has_file({ "angular.json", "nx.json" })
-		-- 	end,
-		-- }),
+	debug = true,
 
-		null_ls.builtins.formatting.prettier.with({
+	sources = {
+
+		-- code actions
+		--
+		-- null_ls.builtins.code_actions.eslint_d,
+
+		-- formatting
+		--
+		-- null_ls.builtins.formatting.eslint_d,
+
+		null_ls.builtins.formatting.prettierd.with({
 			extra_args = { "--no-editorconfig" },
 		}),
 
@@ -20,6 +25,10 @@ null_ls.setup({
 			end,
 		}),
 
+		-- diagnostics
+		--
+		-- null_ls.builtins.diagnostics.eslint_d,
+
 		null_ls.builtins.diagnostics.selene.with({
 			condition = function(utils)
 				return utils.root_has_file({ "selene.toml" })
@@ -27,7 +36,6 @@ null_ls.setup({
 		}),
 	},
 
-	-- you can reuse a shared lspconfig on_attach callback here
 	on_attach = function(client, bufnr)
 		if client.supports_method("textDocument/formatting") then
 			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
