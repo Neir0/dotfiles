@@ -11,6 +11,7 @@ require("nvim-treesitter.configs").setup({
 		"yaml",
 		"bash",
 		"lua",
+		"markdown",
 	},
 
 	highlight = {
@@ -52,7 +53,7 @@ require("nvim-treesitter.configs").setup({
 	},
 
 	incremental_selection = {
-		enable = true,
+		enable = false,
 	},
 
 	indent = {

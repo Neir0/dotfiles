@@ -1,12 +1,19 @@
-require("lspsaga").init_lsp_saga({
-	-- require("lspsaga").setup({
-	code_action_keys = {
+require("lspsaga").setup({
+	symbol_in_winbar = {
+		enable = false,
+	},
+	code_action = {
+		num_shortcut = false,
+		keys = {
+			quit = "<esc>",
+		},
+	},
+	rename = {
 		quit = "<esc>",
 	},
-	-- rename_action_keys = {
-	-- 	quit = "<esc>",
-	-- },
-	rename_action_quit = "<esc>",
+	ui = {
+		border = "single",
+	},
 })
 
 vim.cmd([[
