@@ -15,7 +15,7 @@ null_ls.setup({
 		--
 		-- null_ls.builtins.formatting.eslint_d,
 
-		null_ls.builtins.formatting.prettierd.with({
+		null_ls.builtins.formatting.prettier.with({
 			extra_args = { "--no-editorconfig" },
 		}),
 
@@ -53,4 +53,10 @@ null_ls.setup({
 			})
 		end
 	end,
+})
+
+require("mason-null-ls").setup({
+	ensure_installed = nil,
+	automatic_installation = true,
+	automatic_setup = false,
 })

@@ -83,8 +83,8 @@ nmap("<leader>gD", "<cmd>Telescope diagnostics<cr>")
 nmap("<leader>ga", "<cmd>Lspsaga code_action<cr>")
 nmap("<leader>gR", "<cmd>Lspsaga rename<cr>")
 nmap("<leader>ge", "<cmd>Lspsaga show_line_diagnostics<cr>")
-nmap("<leader>gp", "<cmd>lua require('lspsaga.diagnostic').goto_prev({ severity = vim.diagnostic.severity.ERROR })<cr>")
-nmap("<leader>gn", "<cmd>lua require('lspsaga.diagnostic').goto_next({ severity = vim.diagnostic.severity.ERROR })<cr>")
+nmap("<leader>gp", "<cmd>lua require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })<cr>")
+nmap("<leader>gn", "<cmd>lua require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })<cr>")
 -- nmap(
 -- 	"<leader>gp",
 -- 	"<cmd>lua require('lspsaga.diagnostic').navigate('prev')({ severity = vim.diagnostic.severity.ERROR })<cr>"

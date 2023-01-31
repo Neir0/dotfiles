@@ -1,3 +1,8 @@
+require("mason-lspconfig").setup({
+	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver" },
+	automatic_installation = true,
+})
+
 local lspconfig = require("lspconfig")
 local util = require("lspconfig.util")
 
@@ -65,24 +70,9 @@ lspconfig.cssls.setup({
 -- })
 --
 
---angular
-local cmd = {
-	"ngserver",
-	"--stdio",
-	"--tsProbeLocations",
-	"./node_modules/typescript",
-	-- "/Users/jveiga/.nvm/versions/node/v14.19.2/lib/node_modules/typescript",
-	"--ngProbeLocations",
-	"/Users/jveiga/.nvm/versions/node/v16.16.0/lib/node_modules/@angular/language-service",
-}
-
+--angularls
 lspconfig.angularls.setup({
-	cmd = cmd,
-	root_dir = util.root_pattern("angular.json", "nx.json"),
 	capabilities = capabilities,
-	on_new_config = function(new_config, new_root_dir)
-		new_config.cmd = cmd
-	end,
 })
 
 -- lspconfig.eslint.setup({

@@ -25,9 +25,9 @@ require("packer").startup(function(use)
 	-- use({ "~/projects/neovim-plugins/glepnir-lspsaga.nvim", config = get_config("lspsaga") })
 	-- use("~/projects/neovim-plugins/plenary.nvim")
 	-- use({ "~/projects/neovim-plugins/telescope.nvim", config = get_config("telescope") })
-	use("~/projects/neovim-plugins/ng.nvim")
+	-- use("~/projects/neovim-plugins/ng.nvim")
 
-	-- use("joeveiga/ng.nvim")
+	use("joeveiga/ng.nvim")
 	use("nvim-lua/plenary.nvim")
 	use({ "nvim-telescope/telescope.nvim", config = get_config("telescope") })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
@@ -56,15 +56,29 @@ require("packer").startup(function(use)
 	-- use("shootex/nvim-treesitter-angular")
 	use("windwp/nvim-ts-autotag")
 	use({ "norcalli/nvim-colorizer.lua", config = get_config("colorizer") })
-	-- use({ "williamboman/nvim-lsp-installer" })
-	-- use({ "williamboman/mason.nvim" })
-	-- use({ "williamboman/mason-lspconfig.nvim" })
+	use({
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
+	})
 	use({
 		"neovim/nvim-lspconfig",
+		after = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+		},
 		config = get_config("lspconfig"),
 	})
 	use({ "glepnir/lspsaga.nvim", branch = "main", config = get_config("lspsaga") })
-	use({ "jose-elias-alvarez/null-ls.nvim", config = get_config("null-ls") })
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		after = {
+			"williamboman/mason.nvim",
+			"jay-babu/mason-null-ls.nvim",
+		},
+		config = get_config("null-ls"),
+	})
 	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
@@ -88,7 +102,10 @@ require("packer").startup(function(use)
 	})
 	use({ "rmehri01/onenord.nvim", config = get_config("onenord") })
 	-- use("arcticicestudio/nord-vim")
-
+	use({
+		"kkoomen/vim-doge",
+		run = ":call doge#install()",
+	})
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if packer_bootstrap then
