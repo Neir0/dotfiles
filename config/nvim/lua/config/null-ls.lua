@@ -13,9 +13,8 @@ null_ls.setup({
 
 		-- formatting
 		--
-		-- null_ls.builtins.formatting.eslint_d,
-
 		null_ls.builtins.formatting.prettier.with({
+			disabled_filetypes = { "typescript", "javascript" }, -- these are handled by eslint with prettier plugin
 			extra_args = { "--no-editorconfig" },
 		}),
 

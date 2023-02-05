@@ -22,7 +22,6 @@ require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 
 	-- local plugins
-	-- use({ "~/projects/neovim-plugins/glepnir-lspsaga.nvim", config = get_config("lspsaga") })
 	-- use("~/projects/neovim-plugins/plenary.nvim")
 	-- use({ "~/projects/neovim-plugins/telescope.nvim", config = get_config("telescope") })
 	-- use("~/projects/neovim-plugins/ng.nvim")
@@ -31,7 +30,6 @@ require("packer").startup(function(use)
 	use("nvim-lua/plenary.nvim")
 	use({ "nvim-telescope/telescope.nvim", config = get_config("telescope") })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-	use({ "nvim-telescope/telescope-file-browser.nvim" })
 	use("mfussenegger/nvim-dap")
 	use("rcarriga/nvim-dap-ui")
 	use({ "windwp/nvim-autopairs", config = get_config("autopairs") })
@@ -64,16 +62,15 @@ require("packer").startup(function(use)
 	})
 	use({
 		"neovim/nvim-lspconfig",
-		after = {
+		requires = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 		},
 		config = get_config("lspconfig"),
 	})
-	use({ "glepnir/lspsaga.nvim", branch = "main", config = get_config("lspsaga") })
 	use({
 		"jose-elias-alvarez/null-ls.nvim",
-		after = {
+		requires = {
 			"williamboman/mason.nvim",
 			"jay-babu/mason-null-ls.nvim",
 		},
@@ -100,7 +97,9 @@ require("packer").startup(function(use)
 		},
 		config = get_config("luasnip"),
 	})
-	use({ "rmehri01/onenord.nvim", config = get_config("onenord") })
+	use("christoomey/vim-tmux-navigator")
+	-- use({ "rmehri01/onenord.nvim", config = get_config("onenord") })
+	use({ "dracula/vim", as = "dracula" })
 	-- use("arcticicestudio/nord-vim")
 	use({
 		"kkoomen/vim-doge",

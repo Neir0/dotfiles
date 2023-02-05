@@ -2,7 +2,7 @@ P = function(v)
 	print(vim.inspect(v))
 end
 
-vim.cmd("colorscheme onenord")
+vim.cmd("colorscheme dracula")
 
 require("options")
 require("plugins")

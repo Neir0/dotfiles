@@ -1,5 +1,5 @@
 require("mason-lspconfig").setup({
-	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver" },
+	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint" },
 	automatic_installation = true,
 })
 
@@ -19,6 +19,29 @@ lspconfig.tsserver.setup({
 			importModuleSpecifierPreference = "project-relative",
 		},
 	},
+	-- handlers = {
+	-- 	["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+	-- 		-- tsserver diagnostics to override because they're already handled by
+	-- 		-- eslint plugin
+	-- 		local to_ignore = function(code)
+	-- 			return code == 6133 -- @typescript-eslint/no-unused-vars
+	-- 		end
+	--
+	-- 		if result.diagnostics ~= nil then
+	-- 			local idx = 1
+	-- 			while idx <= #result.diagnostics do
+	-- 				local code = result.diagnostics[idx].code
+	-- 				if to_ignore(code) then
+	-- 					table.remove(result.diagnostics, idx)
+	-- 				else
+	-- 					idx = idx + 1
+	-- 				end
+	-- 			end
+	-- 		end
+	--
+	-- 		vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+	-- 	end,
+	-- },
 })
 
 lspconfig.emmet_ls.setup({
@@ -75,16 +98,35 @@ lspconfig.angularls.setup({
 	capabilities = capabilities,
 })
 
--- lspconfig.eslint.setup({
--- 	capabilities = capabilities,
--- 	settings = {
--- 		codeActionOnSave = {
--- 			enable = true,
--- 		},
--- 	},
--- })
---
--- vim.api.nvim_create_autocmd("BufWritePre", {
--- 	pattern = "*.tsx,*.ts,*.jsx,*.js",
--- 	command = "EslintFixAll",
--- })
+lspconfig.eslint.setup({
+	capabilities = capabilities,
+	settings = {
+		codeActionOnSave = {
+			enable = true,
+		},
+	},
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.tsx,*.ts,*.jsx,*.js",
+	command = "EslintFixAll",
+})
+
+vim.diagnostic.config({
+	virtual_text = {
+		source = true,
+		severity = { min = vim.diagnostic.severity.WARN },
+		format = function(diag)
+			return string.format("%s [%s]", diag.message, diag.code)
+		end,
+	},
+	signs = false,
+	underline = true,
+	severity_sort = true,
+	float = {
+		source = true,
+		format = function(diag)
+			return string.format("%s [%s]", diag.message, diag.code)
+		end,
+	},
+})

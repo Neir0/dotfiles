@@ -115,3 +115,13 @@ export FZF_DEFAULT_OPTS='
 --bind ctrl-a:select-all
 '
 
+
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+# Load theme file
+DRACULA_DISPLAY_NEW_LINE=1
+zplug 'dracula/zsh', as:theme
+
+# Then, source plugins and add commands to $PATH
+zplug load 

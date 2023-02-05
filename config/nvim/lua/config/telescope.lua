@@ -1,3 +1,5 @@
+local actions = require("telescope.actions")
+
 require("telescope").setup({
 	defaults = {
 		dynamic_preview_title = true,
@@ -19,12 +21,28 @@ require("telescope").setup({
 		preview = {
 			treesitter = false,
 		},
+		mappings = {
+			i = {
+				["<C-u>"] = actions.results_scrolling_up,
+				["<C-d>"] = actions.results_scrolling_down,
+				["<PageUp>"] = actions.preview_scrolling_up,
+				["<PageDown>"] = actions.preview_scrolling_down,
+			},
+			n = {
+				["<C-u>"] = actions.results_scrolling_up,
+				["<C-d>"] = actions.results_scrolling_down,
+				["<PageUp>"] = actions.preview_scrolling_up,
+				["<PageDown>"] = actions.preview_scrolling_down,
+
+				["P"] = require("telescope.actions.layout").toggle_preview,
+			},
+		},
 	},
 	pickers = {
 		buffers = {
 			mappings = {
-				i = {
-					["<c-d>"] = "delete_buffer",
+				n = {
+					["d"] = "delete_buffer",
 				},
 			},
 		},
@@ -48,17 +66,6 @@ require("telescope").setup({
 			},
 		},
 	},
-	extensions = {
-		-- executor = {
-		--   commands = {
-		--     { 'Buffer: Clear', '%d' },
-		--     { 'Config: Re-source $MYVIMRC', { cmd = 'source', args = { '$MYVIMRC' } } },
-		--     { 'Config: Re-source current file', { cmd = 'source', args = { '%' } } },
-		--     { 'Coc: Restart', { cmd = 'CocRestart' } },
-		--   }
-		-- }
-	},
 })
 
--- require('telescope').load_extension('executor')
 require("telescope").load_extension("fzf")

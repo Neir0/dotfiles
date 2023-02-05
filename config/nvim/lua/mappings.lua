@@ -46,7 +46,7 @@ nmap("<leader>Gl", ":G pull<cr>")
 nmap("<leader>Gb", ":G blame<cr>")
 
 -- hop
-nmap("s", "<cmd>HopChar2<cr>")
+map({ "n", "v" }, "s", "<cmd>HopChar2<cr>")
 
 -- quickfix/location lists
 nmap("<leader>cn", "<cmd>cnext<cr>")
@@ -60,10 +60,10 @@ nmap("<leader>lc", "<cmd>lclose<cr>")
 nmap("<leader>wv", "<cmd>wincmd v<cr>")
 nmap("<leader>wr", "<cmd>wincmd r<cr>")
 nmap("<leader>wp", "<cmd>wincmd p<cr>")
-nmap("<leader>wh", "<cmd>wincmd h<cr>")
-nmap("<leader>wl", "<cmd>wincmd l<cr>")
-nmap("<leader>wj", "<cmd>wincmd j<cr>")
-nmap("<leader>wk", "<cmd>wincmd k<cr>")
+-- nmap("<leader>wh", "<cmd>wincmd h<cr>")
+-- nmap("<leader>wl", "<cmd>wincmd l<cr>")
+-- nmap("<leader>wj", "<cmd>wincmd j<cr>")
+-- nmap("<leader>wk", "<cmd>wincmd k<cr>")
 
 -- buffer management
 nmap("<leader>bl", "<cmd>Telescope buffers<cr>")
@@ -80,22 +80,28 @@ nmap("<leader>gs", "<cmd>Telescope lsp_document_symbols<cr>")
 nmap("<leader>gS", "<cmd>Telescope lsp_workspace_symbols<cr>")
 nmap("<leader>gr", "<cmd>Telescope lsp_references<cr>")
 nmap("<leader>gD", "<cmd>Telescope diagnostics<cr>")
-nmap("<leader>ga", "<cmd>Lspsaga code_action<cr>")
-nmap("<leader>gR", "<cmd>Lspsaga rename<cr>")
-nmap("<leader>ge", "<cmd>Lspsaga show_line_diagnostics<cr>")
-nmap("<leader>gp", "<cmd>lua require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })<cr>")
-nmap("<leader>gn", "<cmd>lua require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })<cr>")
--- nmap(
--- 	"<leader>gp",
--- 	"<cmd>lua require('lspsaga.diagnostic').navigate('prev')({ severity = vim.diagnostic.severity.ERROR })<cr>"
--- )
--- nmap(
--- 	"<leader>gn",
--- 	"<cmd>lua require('lspsaga.diagnostic').navigate('next')({ severity = vim.diagnostic.severity.ERROR })<cr>"
--- )
-nmap("[g", "<cmd>Lspsaga diagnostic_jump_prev<cr>")
-nmap("]g", "<cmd>Lspsaga diagnostic_jump_next<cr>")
-nmap("K", "<cmd>Lspsaga hover_doc<cr>")
+-- nmap("<leader>ga", "<cmd>Lspsaga code_action<cr>")
+-- nmap("<leader>gR", "<cmd>Lspsaga rename<cr>")
+-- nmap("<leader>ge", "<cmd>Lspsaga show_line_diagnostics<cr>")
+-- nmap("<leader>gp", "<cmd>lua require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })<cr>")
+-- nmap("<leader>gn", "<cmd>lua require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })<cr>")
+-- nmap("[g", "<cmd>Lspsaga diagnostic_jump_prev<cr>")
+-- nmap("]g", "<cmd>Lspsaga diagnostic_jump_next<cr>")
+-- nmap("K", "<cmd>Lspsaga hover_doc<cr>")
+nmap("<leader>ga", "<cmd>lua vim.lsp.buf.code_action()<cr>")
+nmap("<leader>gR", "<cmd>lua vim.lsp.buf.rename()<cr>")
+nmap("<leader>ge", "<cmd>lua vim.diagnostic.open_float()<cr>")
+nmap(
+	"[e",
+	"<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN }, float = false })<cr>"
+)
+nmap(
+	"]e",
+	"<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, float = false })<cr>"
+)
+nmap("[d", "<cmd>lua vim.diagnostic.goto_prev({ float = { severity = { max = vim.diagnostic.severity.INFO } } })<cr>")
+nmap("]d", "<cmd>lua vim.diagnostic.goto_next({ float = { severity = { max = vim.diagnostic.severity.INFO } } })<cr>")
+nmap("K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 
 -- ng
 nmap("<leader>at", '<cmd>lua require("ng").goto_template_for_component()<cr>')
