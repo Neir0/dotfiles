@@ -1,4 +1,4 @@
-vim.o.clipboard = "unnamed"
+vim.o.clipboard = "unnamedplus"
 vim.o.confirm = true
 vim.o.cursorline = true
 vim.o.foldenable = false
@@ -18,6 +18,7 @@ vim.o.shiftwidth = 2
 vim.o.signcolumn = "number"
 vim.o.smartcase = true
 vim.o.splitright = true
+vim.o.splitbelow = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.expandtab = true

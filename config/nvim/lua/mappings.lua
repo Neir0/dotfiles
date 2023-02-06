@@ -16,7 +16,9 @@ nmap("<leader>s", ":w<cr>")
 nmap("<leader>BB", "<cmd>echo expand('%:p')<cr>")
 nmap("<leader>Bp", '<cmd>let @+ = expand("%:p")<cr>')
 nmap("<leader>Bd", '<cmd>let @+ = expand("%:p:h")<cr>')
--- nmap("<leader>jd", ':call CocAction("runCommand", "docthis.documentThis")<cr>')
+
+-- reset hlsearch
+nmap("<esc>", "<cmd>noh<cr>")
 
 -- folding
 nmap("<leader>zz", "zxzR")

@@ -1,5 +1,5 @@
 require("mason-lspconfig").setup({
-	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint" },
+	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint", "sumneko_lua" },
 	automatic_installation = true,
 })
 
@@ -68,30 +68,31 @@ lspconfig.cssls.setup({
 -- lspconfig.html.setup({
 -- 	capabilities = capabilities,
 -- })
---
--- lspconfig.sumneko_lua.setup({
--- 	settings = {
--- 		Lua = {
--- 			runtime = {
--- 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
--- 				version = "LuaJIT",
--- 			},
--- 			diagnostics = {
--- 				-- Get the language server to recognize the `vim` global
--- 				globals = { "vim" },
--- 			},
--- 			workspace = {
--- 				-- Make the server aware of Neovim runtime files
--- 				library = vim.api.nvim_get_runtime_file("", true),
--- 			},
--- 			-- Do not send telemetry data containing a randomized but unique identifier
--- 			telemetry = {
--- 				enable = false,
--- 			},
--- 		},
--- 	},
--- })
---
+
+lspconfig.sumneko_lua.setup({
+	capabilities = capabilities,
+	settings = {
+		Lua = {
+			runtime = {
+				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				-- Get the language server to recognize the `vim` global
+				globals = { "vim" },
+			},
+			workspace = {
+				-- Make the server aware of Neovim runtime files
+				library = vim.api.nvim_get_runtime_file("", true),
+				checkThirdParty = false,
+			},
+			-- Do not send telemetry data containing a randomized but unique identifier
+			telemetry = {
+				enable = false,
+			},
+		},
+	},
+})
 
 --angularls
 lspconfig.angularls.setup({
@@ -100,11 +101,15 @@ lspconfig.angularls.setup({
 
 lspconfig.eslint.setup({
 	capabilities = capabilities,
-	settings = {
-		codeActionOnSave = {
-			enable = true,
-		},
-	},
+	-- settings = {
+	-- 	format = {
+	-- 		enable = true,
+	-- 	},
+	-- codeActionOnSave = {
+	-- 	enable = true,
+	-- },
+	-- run = "onSave",
+	-- },
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
