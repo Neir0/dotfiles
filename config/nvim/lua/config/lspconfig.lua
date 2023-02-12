@@ -1,6 +1,6 @@
 require("mason-lspconfig").setup({
-	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint", "sumneko_lua" },
-	automatic_installation = true,
+	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint", "lua_ls" },
+	automatic_installation = false,
 })
 
 local lspconfig = require("lspconfig")
@@ -11,38 +11,15 @@ local util = require("lspconfig.util")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.tsserver.setup({
-	capabilities = capabilities,
-	init_options = {
-		disableAutomaticTypingAcquisition = true,
-		preferences = {
-			importModuleSpecifierPreference = "project-relative",
-		},
-	},
-	-- handlers = {
-	-- 	["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-	-- 		-- tsserver diagnostics to override because they're already handled by
-	-- 		-- eslint plugin
-	-- 		local to_ignore = function(code)
-	-- 			return code == 6133 -- @typescript-eslint/no-unused-vars
-	-- 		end
-	--
-	-- 		if result.diagnostics ~= nil then
-	-- 			local idx = 1
-	-- 			while idx <= #result.diagnostics do
-	-- 				local code = result.diagnostics[idx].code
-	-- 				if to_ignore(code) then
-	-- 					table.remove(result.diagnostics, idx)
-	-- 				else
-	-- 					idx = idx + 1
-	-- 				end
-	-- 			end
-	-- 		end
-	--
-	-- 		vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
-	-- 	end,
-	-- },
-})
+-- lspconfig.tsserver.setup({
+-- 	capabilities = capabilities,
+-- 	init_options = {
+-- 		disableAutomaticTypingAcquisition = true,
+-- 		preferences = {
+-- 			importModuleSpecifierPreference = "project-relative",
+-- 		},
+-- 	},
+-- })
 
 lspconfig.emmet_ls.setup({
 	capabilities = capabilities,
@@ -69,7 +46,7 @@ lspconfig.cssls.setup({
 -- 	capabilities = capabilities,
 -- })
 
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
 	capabilities = capabilities,
 	settings = {
 		Lua = {
@@ -101,6 +78,12 @@ lspconfig.angularls.setup({
 
 lspconfig.eslint.setup({
 	capabilities = capabilities,
+	on_attach = function(client, bufnr)
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			buffer = bufnr,
+			command = "EslintFixAll",
+		})
+	end,
 	-- settings = {
 	-- 	format = {
 	-- 		enable = true,
@@ -112,9 +95,17 @@ lspconfig.eslint.setup({
 	-- },
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*.tsx,*.ts,*.jsx,*.js",
-	command = "EslintFixAll",
+-- typescript
+require("typescript").setup({
+	server = {
+		capabilities = capabilities,
+		init_options = {
+			disableAutomaticTypingAcquisition = true,
+			preferences = {
+				importModuleSpecifierPreference = "project-relative",
+			},
+		},
+	},
 })
 
 vim.diagnostic.config({

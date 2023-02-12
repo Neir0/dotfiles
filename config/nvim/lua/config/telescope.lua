@@ -10,16 +10,13 @@ require("telescope").setup({
 		path_display = { "truncate" },
 		vimgrep_arguments = {
 			"rg",
-			"--color=never",
-			"--no-heading",
-			"--with-filename",
-			"--line-number",
-			"--column",
+			"--vimgrep",
 			"--smart-case",
 			"--trim",
+			"--multiline",
 		},
 		preview = {
-			treesitter = false,
+			treesitter = true,
 		},
 		mappings = {
 			i = {

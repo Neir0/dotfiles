@@ -10,6 +10,7 @@ null_ls.setup({
 		-- code actions
 		--
 		-- null_ls.builtins.code_actions.eslint_d,
+		require("typescript.extensions.null-ls.code-actions"),
 
 		-- formatting
 		--
@@ -27,7 +28,6 @@ null_ls.setup({
 		-- diagnostics
 		--
 		-- null_ls.builtins.diagnostics.eslint_d,
-
 		null_ls.builtins.diagnostics.selene.with({
 			condition = function(utils)
 				return utils.root_has_file({ "selene.toml" })
@@ -55,7 +55,7 @@ null_ls.setup({
 })
 
 require("mason-null-ls").setup({
-	ensure_installed = nil,
-	automatic_installation = true,
+	ensure_installed = { "stylua", "selene" },
+	automatic_installation = false,
 	automatic_setup = false,
 })

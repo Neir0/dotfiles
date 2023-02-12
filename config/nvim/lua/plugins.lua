@@ -24,9 +24,9 @@ require("packer").startup(function(use)
 	-- local plugins
 	-- use("~/projects/neovim-plugins/plenary.nvim")
 	-- use({ "~/projects/neovim-plugins/telescope.nvim", config = get_config("telescope") })
-	-- use("~/projects/neovim-plugins/ng.nvim")
+	use("~/projects/neovim-plugins/ng.nvim")
 
-	use("joeveiga/ng.nvim")
+	-- use("joeveiga/ng.nvim")
 	use("nvim-lua/plenary.nvim")
 	use({ "nvim-telescope/telescope.nvim", config = get_config("telescope") })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
@@ -62,9 +62,11 @@ require("packer").startup(function(use)
 	})
 	use({
 		"neovim/nvim-lspconfig",
+		-- "~/projects/neovim-plugins/nvim-lspconfig",
 		requires = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
+			"jose-elias-alvarez/typescript.nvim",
 		},
 		config = get_config("lspconfig"),
 	})
@@ -73,6 +75,7 @@ require("packer").startup(function(use)
 		requires = {
 			"williamboman/mason.nvim",
 			"jay-babu/mason-null-ls.nvim",
+			"jose-elias-alvarez/typescript.nvim",
 		},
 		config = get_config("null-ls"),
 	})
@@ -97,7 +100,10 @@ require("packer").startup(function(use)
 		},
 		config = get_config("luasnip"),
 	})
-	use("christoomey/vim-tmux-navigator")
+	use({
+		"aserowy/tmux.nvim",
+		config = get_config("tmux"),
+	})
 	-- use({ "rmehri01/onenord.nvim", config = get_config("onenord") })
 	use({ "dracula/vim", as = "dracula" })
 	-- use("arcticicestudio/nord-vim")

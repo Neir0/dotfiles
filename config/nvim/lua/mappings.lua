@@ -16,8 +16,6 @@ nmap("<leader>s", ":w<cr>")
 nmap("<leader>BB", "<cmd>echo expand('%:p')<cr>")
 nmap("<leader>Bp", '<cmd>let @+ = expand("%:p")<cr>')
 nmap("<leader>Bd", '<cmd>let @+ = expand("%:p:h")<cr>')
-
--- reset hlsearch
 nmap("<esc>", "<cmd>noh<cr>")
 
 -- folding
@@ -106,6 +104,7 @@ nmap("]d", "<cmd>lua vim.diagnostic.goto_next({ float = { severity = { max = vim
 nmap("K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 
 -- ng
-nmap("<leader>at", '<cmd>lua require("ng").goto_template_for_component()<cr>')
-nmap("<leader>ac", '<cmd>lua require("ng").goto_component_with_template_file()<cr>')
-nmap("<leader>aT", '<cmd>lua require("ng").get_template_tcb()<cr>')
+local ng = require("ng")
+nmap("<leader>at", ng.goto_template_for_component)
+nmap("<leader>ac", ng.goto_component_with_template_file)
+nmap("<leader>aT", ng.get_template_tcb)
