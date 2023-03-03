@@ -14,6 +14,7 @@ require("nvim-treesitter.configs").setup({
 		"bash",
 		"lua",
 		"markdown",
+		"markdown_inline",
 	},
 
 	highlight = {

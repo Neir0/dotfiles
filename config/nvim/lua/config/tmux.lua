@@ -1,6 +1,10 @@
 require("tmux").setup({
+	copy_sync = {
+		redirect_to_clipboard = true,
+	},
 	resize = {
-		resize_step_x = 5,
-		resize_step_y = 5,
+		enable_default_keybindings = true,
+		resize_step_x = 1,
+		resize_step_y = 1,
 	},
 })

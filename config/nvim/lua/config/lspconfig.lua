@@ -1,3 +1,4 @@
+require("mason").setup()
 require("mason-lspconfig").setup({
 	ensure_installed = { "angularls", "cssls", "emmet_ls", "tsserver", "eslint", "lua_ls" },
 	automatic_installation = false,

@@ -1,5 +1,6 @@
 require("lualine").setup({
-	theme = "dracula",
+	-- theme = "onenord",
+	theme = "dracula-nvim",
 	options = {
 		component_separators = {},
 		section_separators = {},

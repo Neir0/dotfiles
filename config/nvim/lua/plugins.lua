@@ -25,6 +25,37 @@ require("packer").startup(function(use)
 	-- use("~/projects/neovim-plugins/plenary.nvim")
 	-- use({ "~/projects/neovim-plugins/telescope.nvim", config = get_config("telescope") })
 	use("~/projects/neovim-plugins/ng.nvim")
+	use({
+		-- "~/projects/neovim-plugins/lspsaga.nvim",
+		"glepnir/lspsaga.nvim",
+		config = function()
+			require("lspsaga").setup({
+				code_action = {
+					show_server_name = true,
+					extend_gitsigns = false,
+					keys = {
+						quit = "<Esc>",
+					},
+				},
+				symbol_in_winbar = {
+					enable = false,
+				},
+				lightbulb = {
+					enable = false,
+				},
+				rename = {
+					quit = "<Esc>",
+				},
+				-- ui = {
+				-- 	kind = require("onenord.integrations.lspsaga").custom_kind(),
+				-- },
+			})
+		end,
+		requires = {
+			{ "nvim-tree/nvim-web-devicons" },
+			{ "nvim-treesitter/nvim-treesitter" },
+		},
+	})
 
 	-- use("joeveiga/ng.nvim")
 	use("nvim-lua/plenary.nvim")
@@ -35,7 +66,13 @@ require("packer").startup(function(use)
 	use({ "windwp/nvim-autopairs", config = get_config("autopairs") })
 	use("kyazdani42/nvim-web-devicons")
 	use({ "kyazdani42/nvim-tree.lua", config = get_config("nvim-tree") })
-	use("tomtom/tcomment_vim")
+	-- use("tomtom/tcomment_vim")
+	use({
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup()
+		end,
+	})
 	use("tpope/vim-fugitive")
 	-- use({ "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim", config = get_config("neogit") })
 	use("tpope/vim-surround")
@@ -54,12 +91,6 @@ require("packer").startup(function(use)
 	-- use("shootex/nvim-treesitter-angular")
 	use("windwp/nvim-ts-autotag")
 	use({ "norcalli/nvim-colorizer.lua", config = get_config("colorizer") })
-	use({
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	})
 	use({
 		"neovim/nvim-lspconfig",
 		-- "~/projects/neovim-plugins/nvim-lspconfig",
@@ -84,10 +115,10 @@ require("packer").startup(function(use)
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-buffer" },
+			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
 			{ "onsails/lspkind.nvim" },
 			-- { "hrsh7th/cmp-path" },
 			-- { "hrsh7th/cmp-cmdline" },
-			-- { "f3fora/cmp-spell", { "hrsh7th/cmp-calc" }, { "lukas-reineke/cmp-rg" } },
 		},
 		config = get_config("nvim-cmp"),
 	})
@@ -104,9 +135,20 @@ require("packer").startup(function(use)
 		"aserowy/tmux.nvim",
 		config = get_config("tmux"),
 	})
-	-- use({ "rmehri01/onenord.nvim", config = get_config("onenord") })
-	use({ "dracula/vim", as = "dracula" })
-	-- use("arcticicestudio/nord-vim")
+	-- use({
+	-- 	"rmehri01/onenord.nvim",
+	-- 	config = get_config("onenord"),
+	-- 	requires = {
+	-- 		"nvim-telescope/telescope.nvim",
+	-- 	},
+	-- })
+	use({
+		"Mofiqul/dracula.nvim",
+		config = get_config("dracula"),
+		requires = {
+			"nvim-telescope/telescope.nvim",
+		},
+	})
 	use({
 		"kkoomen/vim-doge",
 		run = ":call doge#install()",

@@ -1882,6 +1882,28 @@
 			<key>Version</key>
 			<integer>1</integer>
 		</dict>
+		<key>0x43-0x120000-0x8</key>
+		<dict>
+			<key>Action</key>
+			<integer>11</integer>
+			<key>Label</key>
+			<string></string>
+			<key>Text</key>
+			<string>0x02 0x63</string>
+			<key>Version</key>
+			<integer>1</integer>
+		</dict>
+		<key>0x44-0x120000-0x2</key>
+		<dict>
+			<key>Action</key>
+			<integer>11</integer>
+			<key>Label</key>
+			<string></string>
+			<key>Text</key>
+			<string>0x02 0x64</string>
+			<key>Version</key>
+			<integer>1</integer>
+		</dict>
 		<key>0x53-0x120000-0x1</key>
 		<dict>
 			<key>Action</key>
@@ -1904,6 +1926,17 @@
 			<key>Version</key>
 			<integer>1</integer>
 		</dict>
+		<key>0x5a-0x120000-0x6</key>
+		<dict>
+			<key>Action</key>
+			<integer>11</integer>
+			<key>Label</key>
+			<string></string>
+			<key>Text</key>
+			<string>0x02 0x7a</string>
+			<key>Version</key>
+			<integer>1</integer>
+		</dict>
 		<key>0x5b-0x100000-0x21</key>
 		<dict>
 			<key>Action</key>
@@ -1923,50 +1956,6 @@
 			<string></string>
 			<key>Text</key>
 			<string>0x02</string>
-		</dict>
-		<key>0x63-0x100000-0x8</key>
-		<dict>
-			<key>Action</key>
-			<integer>11</integer>
-			<key>Label</key>
-			<string></string>
-			<key>Text</key>
-			<string>0x02 0x63</string>
-			<key>Version</key>
-			<integer>1</integer>
-		</dict>
-		<key>0x64-0x100000-0x2</key>
-		<dict>
-			<key>Action</key>
-			<integer>11</integer>
-			<key>Label</key>
-			<string></string>
-			<key>Text</key>
-			<string>0x02 0x64</string>
-			<key>Version</key>
-			<integer>1</integer>
-		</dict>
-		<key>0x71-0x100000-0xc</key>
-		<dict>
-			<key>Action</key>
-			<integer>11</integer>
-			<key>Label</key>
-			<string></string>
-			<key>Text</key>
-			<string>0x02 0x71</string>
-			<key>Version</key>
-			<integer>1</integer>
-		</dict>
-		<key>0x7a-0x100000-0x6</key>
-		<dict>
-			<key>Action</key>
-			<integer>11</integer>
-			<key>Label</key>
-			<string></string>
-			<key>Text</key>
-			<string>0x02 0x7a</string>
-			<key>Version</key>
-			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>HapticFeedbackForEsc</key>

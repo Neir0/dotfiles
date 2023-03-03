@@ -34,6 +34,10 @@ require("telescope").setup({
 				["P"] = require("telescope.actions.layout").toggle_preview,
 			},
 		},
+		-- borderchars = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+		borderchars = { "▄", "▌", "▀", "▐", "▗", "▖", "▘", "▝" },
+		-- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		results_title = false,
 	},
 	pickers = {
 		buffers = {
