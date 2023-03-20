@@ -35,7 +35,7 @@ nmap("<leader>fR", "<cmd>Telescope resume<cr>")
 -- nvim-tree
 nmap("<leader>nt", "<cmd>NvimTreeToggle<cr>")
 nmap("<leader>nf", "<cmd>NvimTreeFocus<cr>")
-nmap("<leader>nh", "<cmd>NvimTreeFindFile<cr>")
+nmap("<leader>nh", "<cmd>NvimTreeFindFileToggle<cr>")
 
 -- fugitive
 nmap("<leader>GG", ":Ge :<cr>")
